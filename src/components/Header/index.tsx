@@ -6,7 +6,6 @@ import Link from "next/link";
 
 // import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useAccount } from "wagmi";
 import CustomRainbowKitConnectButton from "../CustomRainbowKitConnectButton";
 
 const paths = [

@@ -1,5 +1,5 @@
+"use client";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Image from "next/image";
 
 export default function CustomRainbowKitConnectButton() {
   return (
@@ -10,17 +10,13 @@ export default function CustomRainbowKitConnectButton() {
         openAccountModal,
         openChainModal,
         openConnectModal,
-        authenticationStatus,
+        // authenticationStatus,
         mounted,
       }) => {
         // Note: If your app doesn't use authentication, you
         // can remove all 'authenticationStatus' checks
-        const ready = mounted && authenticationStatus !== "loading";
-        const connected =
-          ready &&
-          account &&
-          chain &&
-          (!authenticationStatus || authenticationStatus === "authenticated");
+        const ready = mounted;
+        const connected = ready && account && chain;
         return (
           <div
             {...(!ready && {

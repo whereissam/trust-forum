@@ -21,9 +21,6 @@ const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "04309ed1007e77d1f119b85205bb779d",
   chains: [
-    mainnet,
-    sepolia,
-    polygon,
     {
       id: 21097,
       network: "Rivest",
@@ -48,8 +45,12 @@ const config = getDefaultConfig({
         },
       },
     },
+    mainnet,
+    sepolia,
+    polygon,
   ],
   transports: {
+    21097: http(),
     [mainnet.id]: http(),
     [sepolia.id]: http(),
     [polygon.id]: http(),

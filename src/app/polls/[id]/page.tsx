@@ -10,20 +10,20 @@ import { useGetPolls } from "@/apis/polls/queries/useGetPolls";
 
 const debateComments = [
   {
-    name: "John Doe",
-    username: "johndoe",
+    name: "Peter Pan",
+    username: "peterpan0929",
     votedFor: "yes",
-    avatarUrl: "/shines_logo.png",
+    avatarUrl: "/peter.avif",
     comment:
       "I believe humans are inherently good. We are born with empathy and compassion, though our experiences can shape how we express these innate qualities.",
     createdAt: new Date("2024-11-12"),
     isLiked: false,
   },
   {
-    name: "Jane Doe",
-    username: "janedoe",
+    name: "Jane Smith",
+    username: "itsjaneeeeee",
     votedFor: "no",
-    avatarUrl: "/shines_logo.png",
+    avatarUrl: "/jane.png",
     comment:
       "I believe humans are inherently bad. If there weren't laws and regulations, we would have committed the worst crimes.",
     createdAt: new Date("2024-11-14"),
@@ -103,13 +103,15 @@ export default function PollsDetailsPage({
             <div className="bg-[#2D2D2D] rounded-lg p-6">
               {/* User Info */}
               <div className="flex items-center mb-6">
-                <Image
-                  src="/shines_logo.png"
-                  width={40}
-                  height={40}
-                  alt="User Avatar"
-                  className="rounded-full"
-                />
+                <div className="relative h-12 w-12 shrink-0">
+                  <Image
+                    src="/john.avif"
+                    fill
+                    alt="User Avatar"
+                    className="rounded-full object-cover"
+                  />
+                </div>
+
                 <div className="ml-3">
                   <div className="text-white font-semibold">John Doe</div>
                   <div className="text-gray-400 text-sm">@johndoe</div>

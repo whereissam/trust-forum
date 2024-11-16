@@ -101,13 +101,14 @@ export default function ConfirmVoteModal({
         </div>
         {/* User Info */}
         <div className="flex items-center mb-6">
-          <Image
-            src="/shines_logo.png"
-            width={40}
-            height={40}
-            alt="User Avatar"
-            className="rounded-full"
-          />
+          <div className="relative h-12 w-12 shrink-0">
+            <Image
+              src="/john.avif"
+              fill
+              alt="User Avatar"
+              className="rounded-full object-cover"
+            />
+          </div>
           <div className="ml-3">
             <div className="text-white font-semibold">John Doe</div>
             <div className="text-gray-400 text-sm">@johndoe</div>

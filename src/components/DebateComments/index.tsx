@@ -14,7 +14,7 @@ interface DebateCommentProps {
 export default function DebateComments({
   name = "John Doe",
   username = "johndoe",
-  avatarUrl = "/shines_logo.png",
+  avatarUrl = "/john.avif",
   comment = "I believe humans are inherently good. We are born with empathy and compassion, though our experiences can shape how we express these innate qualities.",
   createdAt = "2 hours ago",
   votedFor = "yes",
@@ -35,13 +35,14 @@ export default function DebateComments({
     >
       <div className="flex justify-between">
         <div className="flex items-start gap-4">
-          <Image
-            src={avatarUrl}
-            width={40}
-            height={40}
-            alt="User Avatar"
-            className="rounded-full"
-          />
+          <div className="w-12 h-12 relative shrink-0">
+            <Image
+              src={avatarUrl}
+              fill
+              alt="User Avatar"
+              className="object-cover rounded-full"
+            />
+          </div>
 
           <div>
             <div className="flex flex-col">

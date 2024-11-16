@@ -8,6 +8,7 @@ export function getPolls() {
     {
       id: 1,
       title: "Are People Naturally Good or Evil?",
+      address: "0x0000000000000000000000000000000000000001",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
       image: "/people.avif",
@@ -20,6 +21,7 @@ export function getPolls() {
     {
       id: 2,
       title: "Is sleeping early good for health?",
+      address: "0x0000000000000000000000000000000000000002",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
       image: "/sleep.avif",
@@ -32,6 +34,7 @@ export function getPolls() {
     {
       id: 3,
       title: "Memes are art. Do you agree?",
+      address: "0x0000000000000000000000000000000000000003",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
       image: "/meme.avif",

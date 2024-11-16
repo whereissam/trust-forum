@@ -1,11 +1,17 @@
 "use client";
 
 import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { createPublicClient, createWalletClient, custom, defineChain, http } from "viem";
+import {
+  createPublicClient,
+  createWalletClient,
+  custom,
+  defineChain,
+  http,
+} from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
 
-const incoChain = defineChain({
+export const incoChain = defineChain({
   id: 21097,
   name: "Inco Rivest Testnet",
   network: "inco_testnet",

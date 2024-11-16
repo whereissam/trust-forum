@@ -1,21 +1,29 @@
 "use client";
 
-import { SetStateAction } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "../Modal";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+import { incoChain, publicClient } from "@/contracts/config";
+import { createWalletClient, custom } from "viem";
+import { VoteContractAbi } from "@/contracts/voteAbi";
+import { VoteContractAddress } from "@/contracts/voteContract";
+import { useAccount } from "wagmi";
+import { getVoteUserParams } from "@/app/fhevmjs/fhevm";
 
 interface ConfirmVoteModalProps {
   openModal: boolean;
   setOpen: SetStateAction<any>;
   votedFor: string; // yes or no
+  pollAddress: string;
 }
 
 export default function ConfirmVoteModal({
   openModal,
   setOpen,
   votedFor = "yes",
+  pollAddress = "0x0000000000000000000000000000000000000001",
 }: ConfirmVoteModalProps) {
   const {
     register,
@@ -24,20 +32,46 @@ export default function ConfirmVoteModal({
   } = useForm();
   const router = useRouter();
   const pathname = usePathname();
+  const [walletClient, setWalletClient] = useState<any>();
+
+  const { address } = useAccount();
+
+  useEffect(() => {
+    // set wallet client
+    if (typeof window !== undefined) {
+      const walletClient = createWalletClient({
+        chain: incoChain,
+        transport: custom(window.ethereum!),
+      });
+
+      setWalletClient(walletClient);
+    }
+  }, [setWalletClient]);
 
   const onSubmit = async (data: any) => {
     console.log(data);
 
-    // accept event
-    const { request: accept } = await publicClient.simulateContract({
-      address: "0xfcc5aff8946Aa3A8015959Bc468255489FcaD241",
-      abi: abi,
-      functionName: "vote",
-      args: [],
-      account: account[0],
-    });
+    if (address) {
+      const args = await getVoteUserParams(
+        address,
+        pollAddress,
+        data.votedFor === "yes" ? 1 : 0
+      );
+      // accept event
+      const { request: vote } = await publicClient.simulateContract({
+        address: VoteContractAddress,
+        abi: VoteContractAbi,
+        functionName: "vote",
+        args: [
+          args[0],
+          uint8ArrayToHexString(args[1]),
+          uint8ArrayToHexString(args[2]),
+        ],
+        account: address,
+      });
 
-    await walletClient.writeContract(accept);
+      await walletClient.writeContract(vote);
+    }
 
     // close modal
     setOpen(false);
@@ -125,5 +159,14 @@ export default function ConfirmVoteModal({
         </div>
       </form>
     </Modal>
+  );
+}
+
+function uint8ArrayToHexString(uint8Array: Uint8Array) {
+  return (
+    "0x" +
+    Array.from(uint8Array)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("")
   );
 }

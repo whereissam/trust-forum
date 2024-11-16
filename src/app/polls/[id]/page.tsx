@@ -6,6 +6,7 @@ import Image from "next/image";
 import { use, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
+import { useGetPolls } from "@/apis/polls/queries/useGetPolls";
 
 const debateComments = [
   {
@@ -38,10 +39,20 @@ export default function PollsDetailsPage({
   const { id } = use(params);
   const searchParams = useSearchParams();
 
+  const { data: polls, isLoading } = useGetPolls();
+
+  console.log(polls);
+
   const isVoted = searchParams.get("isVoted");
 
   const [selected, setSelected] = useState<null | string>(null);
   const [openModal, setOpenModal] = useState(false);
+
+  const poll = polls?.find((poll) => poll.id == id);
+
+  if (!poll) {
+    return null;
+  }
 
   return (
     <div>
@@ -49,13 +60,11 @@ export default function PollsDetailsPage({
         <div className="grid grid-cols-12 gap-8">
           {/* Main Content Section */}
           <div className="col-span-12 md:col-span-9">
-            <h1 className="text-4xl font-bold text-white mb-6">
-              Are People Naturally Good or Evil?
-            </h1>
+            <h1 className="text-4xl font-bold text-white mb-6">{poll.title}</h1>
 
-            <div className="mb-6 rounded-lg border border-primary h-[450px] relative">
+            <div className="mb-6 rounded-lg h-[500px] relative">
               <Image
-                src="/shines_logo.png"
+                src={poll.image}
                 fill
                 alt="Poll Image"
                 className="rounded-lg"
@@ -64,12 +73,7 @@ export default function PollsDetailsPage({
 
             <div className="text-gray-300 mb-6">
               <h3 className="text-xl text-primary font-bold">Description</h3>
-              <p>
-                This age-old philosophical question explores the fundamental
-                nature of human morality. Share your perspective on whether
-                humans are inherently good, naturally inclined towards evil, or
-                shaped by their environment.
-              </p>
+              <p>{poll.description}</p>
             </div>
 
             {/* Debate Section */}

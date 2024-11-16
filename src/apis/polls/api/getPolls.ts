@@ -10,7 +10,7 @@ export function getPolls() {
       title: "Are People Naturally Good or Evil?",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
-      image: "/shines_logo.png",
+      image: "/people.avif",
       description: `This age-old philosophical question explores the fundamental nature of
                   human morality. Share your perspective on whether humans are
                   inherently good, naturally inclined towards evil, or shaped by their
@@ -22,7 +22,7 @@ export function getPolls() {
       title: "Is sleeping early good for health?",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
-      image: "/shines_logo.png",
+      image: "/sleep.avif",
       description: `This age-old philosophical question explores the fundamental nature of
                   human morality. Share your perspective on whether humans are
                   inherently good, naturally inclined towards evil, or shaped by their
@@ -34,7 +34,7 @@ export function getPolls() {
       title: "Memes are art. Do you agree?",
       startDate: "10/01/2023",
       endDate: "10/01/2023",
-      image: "/shines_logo.png",
+      image: "/meme.avif",
       description: `This age-old philosophical question explores the fundamental nature of
                     human morality. Share your perspective on whether humans are
                     inherently good, naturally inclined towards evil, or shaped by their

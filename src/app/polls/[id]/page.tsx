@@ -118,8 +118,13 @@ export default function PollsDetailsPage({
 
               {/* Voting Section */}
               <div className="space-y-4">
+                {/* YES */}
                 <div
-                  className={`relative uppercase rounded-lg border border-solid border-primary`}
+                  className={`relative flex items-center uppercase rounded-lg border border-solid ${
+                    selected === "yes" && !isVoted
+                      ? "border-primary"
+                      : "border-white"
+                  }`}
                   onClick={() => {
                     const input = document.getElementById(
                       "yes"
@@ -129,7 +134,11 @@ export default function PollsDetailsPage({
                   }}
                 >
                   {/* Progress Bar - YES */}
-                  <div className="w-[60%] bg-primary p-3 rounded-md overflow-hidden flex items-center">
+                  <div
+                    className={`p-3 rounded-md overflow-hidden flex items-center ${
+                      isVoted ? "w-[60%] bg-primary" : ""
+                    }`}
+                  >
                     <input
                       type="radio"
                       id="yes"
@@ -149,12 +158,31 @@ export default function PollsDetailsPage({
                       Yes
                     </label>
                   </div>
+                  {/* Display voter count at the right */}
+                  <span className="ml-auto pr-3 flex items-center text-[#808080] font-medium">
+                    {/* user icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    <p className="text-sm">123</p>
+                  </span>
                 </div>
                 {/* NO */}
                 <div
                   className={`relative flex items-center uppercase rounded-lg border border-solid ${
                     selected === "no" && !isVoted
-                      ? "border-primary"
+                      ? "border-primary-purple"
                       : "border-white"
                   }`}
                   onClick={() => {
@@ -166,7 +194,11 @@ export default function PollsDetailsPage({
                   }}
                 >
                   {/* Progress Bar - NO */}
-                  <div className="w-[40%] bg-primary-purple p-3 rounded-md overflow-hidden flex items-center">
+                  <div
+                    className={`p-3 rounded-md overflow-hidden flex items-center ${
+                      isVoted ? "w-[40%] bg-primary-purple" : ""
+                    }`}
+                  >
                     <input
                       type="radio"
                       id="no"
@@ -223,7 +255,13 @@ export default function PollsDetailsPage({
           </div>
         </div>
       </div>
-      <ConfirmVoteModal openModal={openModal} setOpen={setOpenModal} />
+      {!!selected && (
+        <ConfirmVoteModal
+          openModal={openModal}
+          setOpen={setOpenModal}
+          votedFor={selected}
+        />
+      )}
     </div>
   );
 }

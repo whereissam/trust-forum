@@ -75,18 +75,22 @@ export default function PollsDetailsPage({
             {/* Debate Section */}
             <div>
               <h3 className="text-xl text-primary font-bold">Debate</h3>
-              {debateComments.map((comment) => (
-                <DebateComments
-                  key={comment.username}
-                  name={comment.name}
-                  username={comment.username}
-                  votedFor={comment.votedFor}
-                  isLiked={comment.isLiked}
-                  comment={comment.comment}
-                  avatarUrl={comment.avatarUrl}
-                  createdAt={format(comment.createdAt, "yyyy-MM-dd HH:mm")}
-                />
-              ))}
+              {isVoted === "true" ? (
+                debateComments.map((comment) => (
+                  <DebateComments
+                    key={comment.username}
+                    name={comment.name}
+                    username={comment.username}
+                    votedFor={comment.votedFor}
+                    isLiked={comment.isLiked}
+                    comment={comment.comment}
+                    avatarUrl={comment.avatarUrl}
+                    createdAt={format(comment.createdAt, "yyyy-MM-dd HH:mm")}
+                  />
+                ))
+              ) : (
+                <div className="text-white">Vote to see all comments!</div>
+              )}
             </div>
           </div>
 

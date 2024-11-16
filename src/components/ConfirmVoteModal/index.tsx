@@ -80,17 +80,16 @@ export default function ConfirmVoteModal({
               type="text"
               className="ml-auto w-full bg-transparent bg-[#2D2D2D] text-primary text-right focus:outline-none"
               defaultValue={0}
-              placeholder="0"
+              placeholder={"0"}
               {...register("raise", {
                 required: true,
                 valueAsNumber: true,
                 pattern: {
                   value: /^(0|[1-9]\d*)(\.\d+)?$/,
                 },
-                validate: (value: number) => value >= 0 || value <= 100,
+                validate: (value: number) => value >= 0 && value <= 100,
               })}
             ></input>
-            {errors.raise && <p>{errors.raise.message}</p>}
           </div>
         </div>
         <div className="flex gap-x-5 w-full">

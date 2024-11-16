@@ -1,9 +1,12 @@
 "use client";
 
+import { useGetPolls } from "@/apis/polls/queries/useGetPolls";
 import LeaderboardCard from "@/components/LeaderboardCard";
 import PollCard from "@/components/PollCard";
 
 export default function Home() {
+  const { data: polls, isLoading } = useGetPolls();
+
   return (
     <div>
       <div className="mx-auto py-8">
@@ -14,8 +17,8 @@ export default function Home() {
               Ongoing Polls
             </h2>
 
-            {/* Search Bar */}
-            <div className="flex gap-4 mb-8">
+            {/* Search Bar - Currently not in use */}
+            {/* <div className="flex gap-4 mb-8">
               <input
                 type="text"
                 placeholder="Search polls..."
@@ -24,17 +27,18 @@ export default function Home() {
               <button className="px-6 py-2 bg-primary text-black rounded-md font-medium">
                 Search
               </button>
-            </div>
+            </div> */}
 
             {/* Polls Grid */}
-            <div className="grid grid-cols-3 gap-6">
-              <PollCard />
-              <PollCard />
-              <PollCard />
-              <PollCard />
-              <PollCard />
-              <PollCard />
-            </div>
+            {isLoading ? (
+              <div className="text-white text-center">Fetching polls...</div>
+            ) : (
+              <div className="grid grid-cols-3 gap-6">
+                {polls?.map((poll) => (
+                  <PollCard key={poll.id} {...poll} />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Leaderboard Section */}

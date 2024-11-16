@@ -28,7 +28,11 @@ export default function DebateComments({
   };
 
   return (
-    <div className="bg-[#2D2D2D] rounded-r-lg p-6 my-4 border-l-4 border-l-[#C9E052]">
+    <div
+      className={`bg-[#2D2D2D] rounded-r-lg p-6 my-4 border-l-4 ${
+        votedFor === "yes" ? "border-l-primary" : "border-l-primary-purple"
+      }`}
+    >
       <div className="flex justify-between">
         <div className="flex items-start gap-4">
           <Image

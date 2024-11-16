@@ -4,6 +4,30 @@ import ConfirmVoteModal from "@/components/ConfirmVoteModal";
 import DebateComments from "@/components/DebateComments";
 import Image from "next/image";
 import { use, useState } from "react";
+import { format } from "date-fns";
+
+const debateComments = [
+  {
+    name: "John Doe",
+    username: "johndoe",
+    votedFor: "yes",
+    avatarUrl: "/shines_logo.png",
+    comment:
+      "I believe humans are inherently good. We are born with empathy and compassion, though our experiences can shape how we express these innate qualities.",
+    createdAt: new Date("2024-11-12"),
+    isLiked: false,
+  },
+  {
+    name: "Jane Doe",
+    username: "janedoe",
+    votedFor: "no",
+    avatarUrl: "/shines_logo.png",
+    comment:
+      "I believe humans are inherently bad. If there weren't laws and regulations, we would have committed the worst crimes.",
+    createdAt: new Date("2024-11-14"),
+    isLiked: true,
+  },
+];
 
 export default function PollsDetailsPage({
   params,
@@ -47,7 +71,18 @@ export default function PollsDetailsPage({
             {/* Debate Section */}
             <div>
               <h3 className="text-xl text-primary font-bold">Debate</h3>
-              <DebateComments />
+              {debateComments.map((comment) => (
+                <DebateComments
+                  key={comment.username}
+                  name={comment.name}
+                  username={comment.username}
+                  votedFor={comment.votedFor}
+                  isLiked={comment.isLiked}
+                  comment={comment.comment}
+                  avatarUrl={comment.avatarUrl}
+                  createdAt={format(comment.createdAt, "yyyy-MM-dd HH:mm")}
+                />
+              ))}
             </div>
           </div>
 

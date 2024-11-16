@@ -2,6 +2,8 @@
 
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
+import { useCreatePoll } from "@/apis/polls/queries/useCreatePoll";
+import { useRouter } from "next/router";
 
 const labelStyles = "block mb-2 text-sm font-medium text-white w-[120px]";
 const inputStyles =
@@ -14,8 +16,16 @@ export default function CreatePollPage() {
     control,
     formState: { isValid, errors },
   } = useForm();
+
+  const useCreatePollMutation = useCreatePoll();
+  const router = useRouter();
+
   function onSubmit(data: any) {
-    console.log(data);
+    useCreatePollMutation.mutate(data, {
+      onSuccess: () => {
+        router.push("/");
+      },
+    });
   }
 
   return (

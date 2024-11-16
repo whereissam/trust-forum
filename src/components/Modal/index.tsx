@@ -20,7 +20,7 @@ export default function Modal({
 }: TimeslotDetailModalProps) {
   return (
     <Transition.Root as={Fragment} show={openModal}>
-      <Dialog as="div" className="relative z-infinity" onClose={setOpen}>
+      <Dialog as="div" className="relative z-infinity" onClose={() => {}}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

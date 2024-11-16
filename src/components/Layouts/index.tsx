@@ -2,13 +2,13 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Web3AuthInnerContext,
-  Web3AuthProvider,
-} from "@web3auth/modal-react-hooks";
-import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
 import DefeaultLayout from "./DefaultLayout";
-import web3AuthContextConfig from "@/helpers/web3auth";
+// import {
+//   Web3AuthInnerContext,
+//   Web3AuthProvider,
+// } from "@web3auth/modal-react-hooks";
+// import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
+// import web3AuthContextConfig from "@/helpers/web3auth";
 import { SessionProvider } from "next-auth/react";
 import { rainbowWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
 
@@ -45,15 +45,15 @@ const config = getDefaultConfig({
         },
       },
     },
-    mainnet,
-    sepolia,
-    polygon,
+    // mainnet,
+    // sepolia,
+    // polygon,
   ],
   transports: {
     21097: http(),
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [polygon.id]: http(),
+    // [mainnet.id]: http(),
+    // [sepolia.id]: http(),
+    // [polygon.id]: http(),
   },
   wallets: [
     {
@@ -74,13 +74,13 @@ export default function Layout({
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <Web3AuthProvider config={web3AuthContextConfig}>
-            <WalletServicesProvider context={Web3AuthInnerContext}>
-              <SessionProvider>
-                <DefeaultLayout>{children}</DefeaultLayout>
-              </SessionProvider>
-            </WalletServicesProvider>
-          </Web3AuthProvider>
+          {/* <Web3AuthProvider config={web3AuthContextConfig}>
+            <WalletServicesProvider context={Web3AuthInnerContext}> */}
+          <SessionProvider>
+            <DefeaultLayout>{children}</DefeaultLayout>
+          </SessionProvider>
+          {/* </WalletServicesProvider>
+          </Web3AuthProvider> */}
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

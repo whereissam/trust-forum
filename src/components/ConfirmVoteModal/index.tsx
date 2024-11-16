@@ -11,6 +11,7 @@ import { VoteContractAbi } from "@/contracts/voteAbi";
 import { VoteContractAddress } from "@/contracts/voteContract";
 import { useAccount } from "wagmi";
 import { getVoteUserParams } from "@/app/fhevmjs/fhevm";
+import { toast } from "react-toastify";
 
 interface ConfirmVoteModalProps {
   openModal: boolean;
@@ -28,10 +29,11 @@ export default function ConfirmVoteModal({
   const {
     register,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid },
   } = useForm();
   const router = useRouter();
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false);
   const [walletClient, setWalletClient] = useState<any>();
 
   const { address } = useAccount();
@@ -52,26 +54,22 @@ export default function ConfirmVoteModal({
     console.log(data);
 
     if (address) {
+      setLoading(true);
       const likes = data.votedFor === "yes" ? 1 : 0;
-      const args = await getVoteUserParams(
-        address,
-        pollAddress,
-        likes,
-      );
-      // accept event
+      const args = await getVoteUserParams(address, pollAddress, likes);
+      // cast vote - smart contract interaction
       const { request: vote } = await publicClient.simulateContract({
         address: VoteContractAddress,
         abi: VoteContractAbi,
         functionName: "voteMock",
-        args: [
-          args[0],
-          likes, // uint8ArrayToHexString(args[1]),
-          uint8ArrayToHexString(args[2]),
-        ],
+        args: [args[0], likes, uint8ArrayToHexString(args[2])],
+        chain: incoChain,
         account: address,
       });
 
-      await walletClient.writeContract(vote);
+      const transactionHash = await walletClient.writeContract(vote);
+
+      toast.success(`Vote cast successfully (Hash: ${transactionHash})`);
     }
 
     // close modal
@@ -146,14 +144,14 @@ export default function ConfirmVoteModal({
         <div className="flex gap-x-5 w-full">
           <button
             type="submit"
-            disabled={!isValid}
-            className="bg-primary text-[#121212] font-bold py-2 px-4 w-full disabled:bg-gray-100 disabled:text-black"
+            disabled={!isValid || loading}
+            className="bg-primary text-[#121212] rounded-lg font-bold py-2 px-4 w-full disabled:bg-gray-100 disabled:text-black"
           >
-            Vote
+            {loading ? "Loading..." : "Vote"}
           </button>
           <button
             onClick={() => setOpen(false)}
-            className="bg-transparent border border-primary text-primary w-full font-bold"
+            className="bg-transparent border rounded-lg border-primary text-primary w-full font-bold"
           >
             Cancel
           </button>

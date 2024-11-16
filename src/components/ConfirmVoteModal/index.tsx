@@ -25,8 +25,19 @@ export default function ConfirmVoteModal({
   const router = useRouter();
   const pathname = usePathname();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
+
+    // accept event
+    const { request: accept } = await publicClient.simulateContract({
+      address: "0xfcc5aff8946Aa3A8015959Bc468255489FcaD241",
+      abi: abi,
+      functionName: "vote",
+      args: [],
+      account: account[0],
+    });
+
+    await walletClient.writeContract(accept);
 
     // close modal
     setOpen(false);

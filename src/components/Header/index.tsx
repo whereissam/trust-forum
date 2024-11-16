@@ -16,10 +16,6 @@ const paths = [
     path: "/results",
     name: "Expired Polls",
   },
-  {
-    path: "/leaderboard",
-    name: "Leaderboard",
-  },
 ];
 
 export default function Header() {

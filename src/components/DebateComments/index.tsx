@@ -1,15 +1,38 @@
 import Image from "next/image";
 import { useState } from "react";
 
-export default function DebateComments() {
-  const [isLiked, setIsLiked] = useState(false);
+interface DebateCommentProps {
+  name: string;
+  username: string;
+  avatarUrl: string;
+  comment: string;
+  createdAt: string;
+  votedFor: string; // yes or no
+  isLiked: boolean;
+}
+
+export default function DebateComments({
+  name = "John Doe",
+  username = "johndoe",
+  avatarUrl = "/shines_logo.png",
+  comment = "I believe humans are inherently good. We are born with empathy and compassion, though our experiences can shape how we express these innate qualities.",
+  createdAt = "2 hours ago",
+  votedFor = "yes",
+  isLiked = false,
+}: DebateCommentProps) {
+  const [pendingIsLiked, setPendingIsLiked] = useState(isLiked);
+
+  const handleLike = () => {
+    setPendingIsLiked(!pendingIsLiked);
+    // TODO: some api actions
+  };
 
   return (
     <div className="bg-[#2D2D2D] rounded-r-lg p-6 my-4 border-l-4 border-l-[#C9E052]">
       <div className="flex justify-between">
         <div className="flex items-start gap-4">
           <Image
-            src="/shines_logo.png"
+            src={avatarUrl}
             width={40}
             height={40}
             alt="User Avatar"
@@ -18,25 +41,21 @@ export default function DebateComments() {
 
           <div>
             <div className="flex flex-col">
-              <span className="text-white font-semibold">John Doe</span>
-              <span className="text-gray-400 text-sm">@johndoe</span>
+              <span className="text-white font-semibold">{name}</span>
+              <span className="text-gray-400 text-sm">@{username}</span>
             </div>
 
-            <p className="text-gray-300 mt-2">
-              I believe humans are inherently good. We are born with empathy and
-              compassion, though our experiences can shape how we express these
-              innate qualities.
-            </p>
+            <p className="text-gray-300 mt-2">{comment}</p>
 
             <span className="text-gray-500 text-sm mt-2 block">
-              2 hours ago
+              {createdAt}
             </span>
           </div>
         </div>
 
         <div className="flex flex-col items-end">
           <button
-            onClick={() => setIsLiked(!isLiked)}
+            onClick={handleLike}
             className="text-gray-400 hover:text-red-500 transition-colors"
           >
             {isLiked ? (

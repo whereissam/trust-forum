@@ -10,7 +10,7 @@ export default function DefeaultLayout({
   return (
     <div>
       <Header />
-      <div className="px-3">{children}</div>
+      <div className="px-6">{children}</div>
     </div>
   );
 }

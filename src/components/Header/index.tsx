@@ -2,19 +2,19 @@
 /* eslint-disable no-console */
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+
+// import { useWeb3Auth } from "@web3auth/modal-react-hooks";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const paths = [
   {
     path: "/",
-    name: "Questions",
+    name: "Ongoing Polls",
   },
   {
     path: "/results",
-    name: "Results",
+    name: "Expired Polls",
   },
   {
     path: "/leaderboard",
@@ -23,43 +23,40 @@ const paths = [
 ];
 
 export default function Header() {
-  const { userInfo, connect, logout, isConnected } = useWeb3Auth();
-  const pathname = usePathname();
+  // const { userInfo, connect, logout, isConnected } = useWeb3Auth();
+  const { data: session } = useSession();
 
   return (
-    <div className="bg-white shadow-md">
+    <div className="shadow-md">
       {/* HEADER */}
-      <div className="px-3 py-4 flex items-center justify-between">
-        <div className="pl-5">
-          <Image src="/shines_logo.png" height={35} width={120} alt="logo" />
+      <div className="px-6 py-4 flex items-center justify-between">
+        <div className="text-xl text-primary">
+          <Link href={"/"}>
+            <h2 className="font-bold">Trend Prediction</h2>
+          </Link>
         </div>
 
         {/* NAVIGATIONS */}
-        <div className="flex items-center space-between gap-x-5">
+        <div className="flex items-center space-between text-primary font-bold">
           {paths.map((path) => (
             <Link
               key={path.path}
               href={path.path}
-              className={`transition-all duration-200 hover:text-blue-500 ${
-                pathname === path.path ? "border-b-2 border-blue-500" : ""
-              }`}
+              className={`transition-all duration-200 mr-10`}
             >
               {path.name}
             </Link>
           ))}
-        </div>
-
-        {/* USER DATA AND PROFILE */}
-        <div className="pr-5 flex items-center gap-x-2">
-          {isConnected ? (
+          {session ? (
             <>
               <button
                 onClick={() => {
-                  logout();
+                  // logout();
+                  signOut();
                 }}
                 className="text-white bg-blue-400 rounded px-3 py-1"
               >
-                Hello {userInfo?.name} Logout
+                Hello {session?.user?.name} Logout
               </button>
 
               <a
@@ -71,14 +68,16 @@ export default function Header() {
             </>
           ) : (
             <>
-              <button
-                onClick={connect}
-                className="text-white bg-blue-400 rounded px-3 py-1"
-              >
-                Web3
+              <button onClick={() => signIn("worldcoin")}>
+                Sign In with Worldcoin
               </button>
             </>
           )}
+          <Link href="/polls/create">
+            <button className="bg-primary text-black ml-10 rounded-md px-3 py-1">
+              Create Poll
+            </button>
+          </Link>
         </div>
       </div>
     </div>

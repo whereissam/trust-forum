@@ -8,6 +8,7 @@ import {
 import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-hooks";
 import DefeaultLayout from "./DefaultLayout";
 import web3AuthContextConfig from "@/helpers/web3auth";
+import { SessionProvider } from "next-auth/react";
 
 export default function Layout({
   children,
@@ -20,7 +21,9 @@ export default function Layout({
     <QueryClientProvider client={queryClient}>
       <Web3AuthProvider config={web3AuthContextConfig}>
         <WalletServicesProvider context={Web3AuthInnerContext}>
-          <DefeaultLayout>{children}</DefeaultLayout>
+          <SessionProvider>
+            <DefeaultLayout>{children}</DefeaultLayout>
+          </SessionProvider>
         </WalletServicesProvider>
       </Web3AuthProvider>
     </QueryClientProvider>

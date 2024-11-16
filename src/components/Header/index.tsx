@@ -6,20 +6,17 @@ import Link from "next/link";
 
 // import { useWeb3Auth } from "@web3auth/modal-react-hooks";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useAccount } from "wagmi";
+import CustomRainbowKitConnectButton from "../CustomRainbowKitConnectButton";
 
 const paths = [
   {
     path: "/",
     name: "Ongoing Polls",
   },
-  {
-    path: "/results",
-    name: "Expired Polls",
-  },
 ];
 
 export default function Header() {
-  // const { userInfo, connect, logout, isConnected } = useWeb3Auth();
   const { data: session } = useSession();
 
   return (
@@ -38,7 +35,7 @@ export default function Header() {
             <Link
               key={path.path}
               href={path.path}
-              className={`transition-all duration-200 mr-10`}
+              className={`transition-all duration-200 mr-6`}
             >
               {path.name}
             </Link>
@@ -69,8 +66,9 @@ export default function Header() {
               </button>
             </>
           )}
+          <CustomRainbowKitConnectButton />
           <Link href="/polls/create">
-            <button className="bg-primary text-black ml-10 rounded-md px-3 py-1">
+            <button className="bg-primary text-black ml-6 rounded-md px-3 py-1">
               Create Poll
             </button>
           </Link>

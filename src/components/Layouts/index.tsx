@@ -1,4 +1,5 @@
 "use client";
+import "@rainbow-me/rainbowkit/styles.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -9,6 +10,57 @@ import { WalletServicesProvider } from "@web3auth/wallet-services-plugin-react-h
 import DefeaultLayout from "./DefaultLayout";
 import web3AuthContextConfig from "@/helpers/web3auth";
 import { SessionProvider } from "next-auth/react";
+import { rainbowWallet, metaMaskWallet } from "@rainbow-me/rainbowkit/wallets";
+
+import { RainbowKitProvider, getDefaultConfig } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, http } from "wagmi";
+import { rainbowWeb3AuthConnector } from "@/RainbowWeb3authConnector";
+import { sepolia, mainnet, polygon } from "wagmi/chains";
+
+const config = getDefaultConfig({
+  appName: "My RainbowKit App",
+  projectId: "04309ed1007e77d1f119b85205bb779d",
+  chains: [
+    mainnet,
+    sepolia,
+    polygon,
+    {
+      id: 21097,
+      network: "Rivest",
+      name: "Rivest Testnet",
+      nativeCurrency: {
+        name: "INCO",
+        symbol: "INCO",
+        decimals: 18,
+      },
+      rpcUrls: {
+        default: {
+          http: ["https://validator.rivest.inco.org"],
+        },
+        public: {
+          http: ["https://validator.rivest.inco.org"],
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: "Explorer",
+          url: "https://explorer.rivest.inco.org",
+        },
+      },
+    },
+  ],
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygon.id]: http(),
+  },
+  wallets: [
+    {
+      groupName: "Recommended",
+      wallets: [rainbowWallet, rainbowWeb3AuthConnector, metaMaskWallet],
+    },
+  ],
+});
 
 export default function Layout({
   children,
@@ -18,14 +70,18 @@ export default function Layout({
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Web3AuthProvider config={web3AuthContextConfig}>
-        <WalletServicesProvider context={Web3AuthInnerContext}>
-          <SessionProvider>
-            <DefeaultLayout>{children}</DefeaultLayout>
-          </SessionProvider>
-        </WalletServicesProvider>
-      </Web3AuthProvider>
-    </QueryClientProvider>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <Web3AuthProvider config={web3AuthContextConfig}>
+            <WalletServicesProvider context={Web3AuthInnerContext}>
+              <SessionProvider>
+                <DefeaultLayout>{children}</DefeaultLayout>
+              </SessionProvider>
+            </WalletServicesProvider>
+          </Web3AuthProvider>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

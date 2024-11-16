@@ -4,6 +4,7 @@ import ConfirmVoteModal from "@/components/ConfirmVoteModal";
 import DebateComments from "@/components/DebateComments";
 import Image from "next/image";
 import { use, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 
 const debateComments = [
@@ -35,8 +36,11 @@ export default function PollsDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const searchParams = useSearchParams();
+
+  const isVoted = searchParams.get("isVoted");
+
   const [selected, setSelected] = useState<null | string>(null);
-  const [isVoted, setIsVoted] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -156,16 +160,18 @@ export default function PollsDetailsPage({
                 {/* YES */}
                 <div
                   className={`relative flex items-center uppercase rounded-lg border border-solid ${
-                    selected === "yes" && !isVoted
+                    selected === "yes" || isVoted === "true"
                       ? "border-primary"
                       : "border-white"
                   }`}
                   onClick={() => {
-                    const input = document.getElementById(
-                      "yes"
-                    ) as HTMLInputElement;
-                    input.checked = true;
-                    setSelected("yes");
+                    if (!isVoted) {
+                      const input = document.getElementById(
+                        "yes"
+                      ) as HTMLInputElement;
+                      input.checked = true;
+                      setSelected("yes");
+                    }
                   }}
                 >
                   {/* Progress Bar - YES */}
@@ -174,44 +180,50 @@ export default function PollsDetailsPage({
                       isVoted ? "w-[60%] bg-primary" : ""
                     }`}
                   >
-                    <input
-                      type="radio"
-                      id="yes"
-                      name="vote"
-                      className="appearance-none w-5 h-5 rounded-full border-2 border-white checked:border-primary relative mr-3
+                    {!isVoted && (
+                      <input
+                        type="radio"
+                        id="yes"
+                        name="vote"
+                        className="appearance-none w-5 h-5 rounded-full border-2 border-white checked:border-primary relative mr-3
                     checked:before:content-[''] checked:before:absolute checked:before:w-3 checked:before:h-3 
                     checked:before:bg-primary checked:before:rounded-full checked:before:top-1/2 checked:before:left-1/2 
                     checked:before:-translate-x-1/2 checked:before:-translate-y-1/2"
-                      onChange={() => setSelected("yes")}
-                    />
+                        onChange={() => setSelected("yes")}
+                      />
+                    )}
                     <label
                       htmlFor="yes"
                       className={`font-bold ${
-                        selected === "yes" ? "text-primary" : "text-white"
+                        selected === "yes" && !isVoted
+                          ? "text-primary"
+                          : "text-white"
                       }`}
                     >
                       Yes
                     </label>
                   </div>
                   {/* Display voter count at the right */}
-                  <span className="ml-auto pr-3 flex items-center text-[#808080] font-medium">
-                    {/* user icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    <p className="text-sm">123</p>
-                  </span>
+                  {isVoted === "true" && (
+                    <span className="ml-auto pr-3 flex items-center text-[#808080] font-medium">
+                      {/* user icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      <p className="text-sm">123</p>
+                    </span>
+                  )}
                 </div>
                 {/* NO */}
                 <div
@@ -221,70 +233,80 @@ export default function PollsDetailsPage({
                       : "border-white"
                   }`}
                   onClick={() => {
-                    const input = document.getElementById(
-                      "no"
-                    ) as HTMLInputElement;
-                    input.checked = true;
-                    setSelected("no");
+                    if (!isVoted) {
+                      const input = document.getElementById(
+                        "no"
+                      ) as HTMLInputElement;
+                      input.checked = true;
+                      setSelected("no");
+                    }
                   }}
                 >
                   {/* Progress Bar - NO */}
                   <div
                     className={`p-3 rounded-md overflow-hidden flex items-center ${
-                      isVoted ? "w-[40%] bg-primary-purple" : ""
+                      isVoted === "true" ? "w-[40%] bg-primary-purple" : ""
                     }`}
                   >
-                    <input
-                      type="radio"
-                      id="no"
-                      name="vote"
-                      className="appearance-none w-5 h-5 rounded-full border-2 border-white checked:border-primary-purple relative mr-3
+                    {!isVoted && (
+                      <input
+                        type="radio"
+                        id="no"
+                        name="vote"
+                        className="appearance-none w-5 h-5 rounded-full border-2 border-white checked:border-primary-purple relative mr-3
                     checked:before:content-[''] checked:before:absolute checked:before:w-3 checked:before:h-3 
                     checked:before:bg-primary-purple checked:before:rounded-full checked:before:top-1/2 checked:before:left-1/2 
                     checked:before:-translate-x-1/2 checked:before:-translate-y-1/2"
-                      onChange={() => setSelected("no")}
-                    />
+                        onChange={() => setSelected("no")}
+                      />
+                    )}
                     <label
                       htmlFor="no"
                       className={`font-bold ${
-                        selected === "no" ? "text-primary-purple" : "text-white"
+                        selected === "no" && !isVoted
+                          ? "text-primary-purple"
+                          : "text-white"
                       }`}
                     >
                       No
                     </label>
                   </div>
                   {/* Display voter count at the right */}
-                  <span className="ml-auto pr-3 flex items-center text-[#808080] font-medium">
-                    {/* user icon */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    <p className="text-sm">123</p>
-                  </span>
+                  {isVoted === "true" && (
+                    <span className="ml-auto pr-3 flex items-center text-[#808080] font-medium">
+                      {/* user icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      <p className="text-sm">123</p>
+                    </span>
+                  )}
                 </div>
 
-                <button
-                  className={`w-full py-2 rounded-md font-bold text-xl ${
-                    selected
-                      ? "bg-primary text-black"
-                      : "bg-gray-600 text-gray-400 cursor-not-allowed"
-                  }`}
-                  disabled={!selected}
-                  onClick={() => setOpenModal(true)}
-                >
-                  Vote Now
-                </button>
+                {isVoted !== "true" && (
+                  <button
+                    className={`w-full py-2 rounded-md font-bold text-xl ${
+                      selected
+                        ? "bg-primary text-black"
+                        : "bg-gray-600 text-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={!selected}
+                    onClick={() => setOpenModal(true)}
+                  >
+                    Vote Now
+                  </button>
+                )}
               </div>
             </div>
           </div>

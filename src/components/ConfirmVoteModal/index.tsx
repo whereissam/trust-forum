@@ -4,6 +4,7 @@ import { SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "../Modal";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 interface ConfirmVoteModalProps {
   openModal: boolean;
@@ -21,12 +22,16 @@ export default function ConfirmVoteModal({
     handleSubmit,
     formState: { isValid, errors },
   } = useForm();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const onSubmit = (data: any) => {
     console.log(data);
 
     // close modal
     setOpen(false);
+
+    router.replace(`${pathname}?isVoted=true`);
   };
 
   return (

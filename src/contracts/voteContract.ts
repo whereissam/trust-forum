@@ -1,6 +1,6 @@
 "use client";
 
-export const VoteContractAddress = '0xD302fd476930759Ea312FFC3802E9707bB427618';
+export const VoteContractAddress = '0xc2012A0b6Ff447e84a150766d7843c2f143bB008';
 
 export const PoolConfig = [{
   name: 'Pool1',

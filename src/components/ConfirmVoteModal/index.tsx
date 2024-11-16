@@ -52,19 +52,20 @@ export default function ConfirmVoteModal({
     console.log(data);
 
     if (address) {
+      const likes = data.votedFor === "yes" ? 1 : 0;
       const args = await getVoteUserParams(
         address,
         pollAddress,
-        data.votedFor === "yes" ? 1 : 0
+        likes,
       );
       // accept event
       const { request: vote } = await publicClient.simulateContract({
         address: VoteContractAddress,
         abi: VoteContractAbi,
-        functionName: "vote",
+        functionName: "voteMock",
         args: [
           args[0],
-          uint8ArrayToHexString(args[1]),
+          likes, // uint8ArrayToHexString(args[1]),
           uint8ArrayToHexString(args[2]),
         ],
         account: address,

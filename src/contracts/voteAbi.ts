@@ -34,6 +34,25 @@ export const VoteContractAbi = [
       {
         "indexed": true,
         "internalType": "address",
+        "name": "targetUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "euint64",
+        "name": "likes",
+        "type": "uint256"
+      }
+    ],
+    "name": "EncryptedVote",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "previousOwner",
         "type": "address"
       },
@@ -67,6 +86,25 @@ export const VoteContractAbi = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "targetUser",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "likes",
+        "type": "uint64"
+      }
+    ],
+    "name": "releasedVote",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "acceptOwnership",
     "outputs": [],
@@ -82,7 +120,7 @@ export const VoteContractAbi = [
       },
       {
         "internalType": "uint64",
-        "name": "totalFavourCountDecrypted",
+        "name": "totalVoteCountDecrypted",
         "type": "uint64"
       }
     ],
@@ -173,19 +211,6 @@ export const VoteContractAbi = [
   },
   {
     "inputs": [],
-    "name": "inFavorCount",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "init",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -245,6 +270,19 @@ export const VoteContractAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "totalVoteCount",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -276,6 +314,29 @@ export const VoteContractAbi = [
       }
     ],
     "name": "vote",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "targetUser",
+        "type": "address"
+      },
+      {
+        "internalType": "uint64",
+        "name": "likes",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes",
+        "name": "inputProof",
+        "type": "bytes"
+      }
+    ],
+    "name": "voteMock",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

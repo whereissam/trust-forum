@@ -1,13 +1,15 @@
 "use client";
 
 import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
 import { useCreatePoll } from "@/apis/polls/queries/useCreatePoll";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 const labelStyles = "block mb-2 text-sm font-medium text-white w-[120px]";
 const inputStyles =
   "text-white bg-transparent border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-3.5";
+
+const Select = dynamic(() => import("react-select"), { ssr: false });
 
 export default function CreatePollPage() {
   const {
@@ -109,9 +111,9 @@ export default function CreatePollPage() {
             Tags
           </label>
           <Controller
-            control={control}
             name="tags"
-            render={({ field: { onChange, value } }) => (
+            control={control}
+            render={({ field: { onChange, value = [] } }) => (
               <Select
                 isMulti
                 className="w-full"
@@ -160,6 +162,7 @@ export default function CreatePollPage() {
                   { value: "technology", label: "Technology" },
                   { value: "trivial", label: "Trivial" },
                 ]}
+                name="tags"
                 onChange={(val) => onChange(val)}
                 value={value}
               />
